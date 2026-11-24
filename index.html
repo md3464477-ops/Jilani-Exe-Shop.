@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JILANI EXE SHOP</title>
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Particle Animation</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: black;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: black;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+let mouse = { x: -1000, y: -1000 };
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+
+        this.vx = Math.random() * 2 - 1;
+        this.vy = Math.random() * 2 - 1;
+
+        this.size = Math.random() * 4 + 2;
+        this.alpha = Math.random() * 120 + 80;
+    }
+
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Bounce on edges
+        if (this.x < 0 || this.x > canvas.width)
+            this.vx *= -1;
+
+        if (this.y < 0 || this.y > canvas.height)
+            this.vy *= -1;
+
+        // Mouse attraction
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+
+        let dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 120 && dist > 1) {
+            this.x -= dx * 0.01;
+            this.y -= dy * 0.01;
+        }
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+
+        ctx.fillStyle = `rgba(0, 192, 192, ${this.alpha / 255})`;
+        ctx.fill();
+    }
+}
+
+// Create 120 particles
+for (let i = 0; i < 120; i++) {
+    particles.push(new Particle());
+}
+
+// Mouse movement
+window.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+// Animation
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ background:#08040e;
+ color:white;
+ font-family:Arial,sans-serif;
+ min-height:100vh;
+}
+.welcome{
+ position:fixed;inset:0;background:#08040e;
+ display:flex;align-items:center;justify-content:center;
+ z-index:10;animation:hide 1s ease 2.5s forwards;
+}
+.welcome h1{
+ color:#fff;text-align:center;font-size:clamp(25px,6vw,55px);
+ text-shadow:0 0 15px #c000ff,0 0 30px #a000ff;
+ animation:glow 1s infinite alternate;
+}
+@keyframes glow{to{transform:scale(1.06);text-shadow:0 0 30px #00eaff}}
+@keyframes hide{to{opacity:0;visibility:hidden}}
+header{text-align:center;padding:45px 15px 35px}
+header h1{
+ font-size:clamp(32px,6vw,52px);
+ color:white;text-shadow:0 0 15px #c000ff;
+ font-weight:900;
+}
+header p{color:#aaa;margin-top:12px;font-size:14px}
+.container{
+ max-width:1100px;margin:auto;padding:15px;
+ display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
+}
+.card{
+ background:#19171e;border:1px solid #39313f;
+ border-radius:17px;padding:25px;
+ transition:.3s;
+}
+.card:hover{
+ border-color:#d000ff;
+ transform:translateY(-5px);
+ box-shadow:0 0 18px #a000ff55;
+}
+.card h2{
+ color:#00eaff;font-size:22px;
+ border-left:5px solid #d000ff;
+ padding-left:12px;margin-bottom:20px;
+}
+.card ul{list-style:none;margin-bottom:22px}
+.card li{
+ color:#ccc;font-size:14px;margin:12px 0;
+}
+.card li:before{content:"◆";color:#bd00ff;margin-right:10px}
+.price{
+ background:#100d15;border:1px solid #c000ff;
+ border-radius:12px;padding:18px 15px;margin-bottom:17px;
+}
+.price p{
+ display:flex;justify-content:space-between;
+ gap:8px;margin:9px 0;font-weight:bold;font-size:14px;
+}
+.price strong{color:#00eaff;text-align:right}
+.buy{
+ width:100%;padding:14px;border:0;border-radius:9px;
+ background:linear-gradient(90deg,#8500e9,#d000ff);
+ color:white;font-weight:900;cursor:pointer;
+}
+.buy:hover{box-shadow:0 0 18px #c000ff}
+.contact{
+ display:none;gap:10px;margin-top:12px;
+}
+.contact a{
+ flex:1;text-align:center;text-decoration:none;
+ color:white;padding:12px 5px;border-radius:8px;
+ font-weight:bold;font-size:13px;
+}
+.whatsapp{background:#168b49}
+.discord{background:#5865f2}
+.payment{
+ border-top:2px solid #bd00ff;
+ margin-top:45px;padding:35px 15px;text-align:center;
+}
+.payment h2{color:#00eaff;margin-bottom:25px}
+.paybox{
+ display:flex;justify-content:center;gap:15px;flex-wrap:wrap;
+}
+.pay{
+ background:#17121d;border:1px solid #8d00b9;
+ border-radius:10px;padding:18px 40px;
+ font-weight:bold;min-width:130px;
+}
+@media(max-width:800px){
+ .container{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:550px){
+ .container{grid-template-columns:1fr}
+ header{padding-top:35px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="welcome">
+ <h1>Welcome To Jilani Exe Shop</h1>
+</div>
+
+<header>
+ <h1>JILANI Exe Shop</h1>
+ <p>Trusted Free Fire Pc Panel Seller . All Panel Work For Main Id</p>
+</header>
+
+<main class="container" id="products">
+
+<div class="card">
+ <h2>Aimbo Panel</h2>
+ <ul>
+  <li>Aimbot Head</li>
+  <li>Only Hedshot</li>
+  <li>Enemy Location</li>
+  <li>Windows 10/ 11 Working</li>
+ </ul>
+ <div class="price">
+  <p>LIFETIME: <strong>1000TK/10$</strong></p>
+  <p>1 Month : <strong>500Tk/5$</strong></p>
+ </div>
+ <button class="buy" onclick="toggleContact(this)">BUY PANEL</button>
+ <div class="contact">
+  <a class="whatsapp" href="https://shorturl.ly/3uYwv" target="_blank">WhatsApp</a>
+  <a class="discord" href="https://discord.gg/7PUBbqnUV" target="_blank">Discord</a>
+ </div>
+</div>
+
+<div class="card">
+ <h2>Premium Panel</h2>
+ <ul>
+  <li>Aimbot Head / Drag</li>
+  <li>Sniper Scope &amp; Switch</li>
+  <li>Speed / Wall / Fast Land / Camera</li>
+  <li>All Sniper Locatio</li>
+ </ul>
+ <div class="price">
+  <p>LIFETIME: <strong>2000TK/20$</strong></p>
+  <p>1 Month : <strong>1000Tk/10$</strong></p>
+ </div>
+ <button class="buy" onclick="toggleContact(this)">BUY PANEL</button>
+ <div class="contact">
+  <a class="whatsapp" href="https://shorturl.ly/3uYwv" target="_blank">WhatsApp</a>
+  <a class="discord" href="https://discord.gg/7PUBbqnUV" target="_blank">Discord</a>
+ </div>
+</div>
+
+<div class="card">
+ <h2>Special Panel</h2>
+ <ul>
+  <li>Windosw 11 Working</li>
+  <li>Aimbot Head . Sniper Switch</li>
+  <li>Camera / Speed / Wall Hack</li>
+  <li>Streamer Esp</li>
+ </ul>
+ <div class="price">
+  <p>LIFETIME: <strong>2500Tk/20$</strong></p>
+  <p>1 Month : <strong>1100Tk/10$</strong></p>
+ </div>
+ <button class="buy" onclick="toggleContact(this)">BUY PANEL</button>
+ <div class="contact">
+  <a class="whatsapp" href="https://shorturl.ly/3uYwv" target="_blank">WhatsApp</a>
+  <a class="discord" href="https://discord.gg/7PUBbqnUV" target="_blank">Discord</a>
+ </div>
+</div>
+
+<div class="card">
+ <h2>Uid Bypass</h2>
+ <ul>
+  <li>101% Main Id Safe</li>
+  <li>All Country Safe</li>
+  <li>Anti-Ban Optimization</li>
+  <li>Instant Activation</li>
+ </ul>
+ <div class="price">
+  <p>1 Month : <strong>700TK/5$</strong></p>
+  <p>1 OBB : <strong>1400Tk/13$</strong></p>
+ </div>
+ <button class="buy" onclick="toggleContact(this)">BUY PANEL</button>
+ <div class="contact">
+  <a class="whatsapp" href="https://shorturl.ly/3uYwv" target="_blank">WhatsApp</a>
+  <a class="discord" href="https://discord.gg/7PUBbqnUV" target="_blank">Discord</a>
+ </div>
+</div>
+
+</main>
+
+<section class="payment">
+ <h2>PAYMENT METHOD</h2>
+ <div class="paybox">
+  <div class="pay">BIKASH</div>
+  <div class="pay">NAGAD</div>
+ </div>
+</section>
+
+<script>
+function toggleContact(button){
+ const contact=button.nextElementSibling;
+ contact.style.display=
+ contact.style.display==="flex"?"none":"flex";
+}
+</script>
+
+</body>
+</html>
